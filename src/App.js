@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import { useMemo } from "react";
+import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default function Home() {
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
+  });
+
+  if (!isLoaded) return <div>Loading...</div>;
+  return <Map />;
 }
 
-export default App;
+function Map() {
+  const center = useMemo(() => ({ lat: 44, lng: -80 }), []);
+
+  return (
+    <GoogleMap zoom={10} center={center} mapContainerClassName="map-container">
+      <Marker position={center} />
+    </GoogleMap>
+  );
+}

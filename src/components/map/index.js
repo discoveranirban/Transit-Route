@@ -42,7 +42,7 @@ function Map({ routeList, currentRoute }) {
         setRoute(val);
       }
     }
-  }, [currentRoute]);
+  }, [routeList, currentRoute]);
 
   const center = route ? parseInt(route.length / 2) : "";
   const centerPathLat = route ? route[center].lat : "";

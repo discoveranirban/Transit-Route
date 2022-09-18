@@ -1,22 +1,45 @@
-import { useMemo } from "react";
-import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
-import "./App.css";
+import { useEffect } from "react";
+import NavbarComp from "./components/navbar";
+import { localStorageGet, localStorageSet } from "./utils";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { v4 as uuidv4 } from "uuid";
 
-export default function Home() {
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
-  });
+function App() {
+  useEffect(() => {
+    const dummyRoute = {
+      name: "199",
+      direction: "UP",
+      id: `107_${uuidv4()}`,
+      status: "ACTIVE",
+      stops: [
+        {
+          lat: 12.9795865148043,
+          lng: 77.5911622741734,
+          id: "stop1",
+        },
+        {
+          lat: 12.9801301594259,
+          lng: 77.5919776656823,
+          id: "stop2",
+        },
+        {
+          lat: 12.9784155838887,
+          lng: 77.5912481048586,
+          id: "stop3",
+        },
+      ],
+    };
 
-  if (!isLoaded) return <div>Loading...</div>;
-  return <Map />;
-}
-
-function Map() {
-  const center = useMemo(() => ({ lat: 44, lng: -80 }), []);
+    if (!localStorageGet()) {
+      localStorageSet(dummyRoute);
+    }
+  }, []);
 
   return (
-    <GoogleMap zoom={10} center={center} mapContainerClassName="map-container">
-      <Marker position={center} />
-    </GoogleMap>
+    <div>
+      <NavbarComp />
+    </div>
   );
 }
+
+export default App;

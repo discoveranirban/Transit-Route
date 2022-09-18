@@ -23,24 +23,46 @@ const Example = styled.div`
   font-size: 10px;
 `;
 
+const Add = styled.text`
+  text-decoration: underline;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 function Create() {
   const [name, setName] = useState("");
   const [direction, setDirection] = useState("");
-  const [stops, setStops] = useState("");
+  const [stops, setStops] = useState([]);
   const [active, setActive] = useState(false);
+  const [lat, setLat] = useState("");
+  const [lang, setLang] = useState("");
 
   const handleSubmit = () => {
     const data = {
       name,
       direction,
       id: `${name}_${uuidv4()}`,
-      status: "ACTIVE",
+      status: active ? "ACTIVE" : "INACTIVE",
       stops,
     };
 
     // [{ "lat": 12.9764291706147, "lng": 77.5866347055324, id: "stop1" }, { "lat": 12.9766382674962, "lng": 77.5863986711483, id: "stop2" }, { "lat": 12.9771191896563, "lng": 77.5857120256672, id: "stop3" }]
 
     localStorageSet(data);
+  };
+
+  const onAdd = () => {
+    if (lat && lang) {
+      const val = {
+        lat: Number(lat),
+        lng: Number(lang),
+        id: `stop${stops.length + 1}`,
+      };
+      setStops([...stops, val]);
+      setLat("");
+      setLang("");
+    }
   };
 
   return (
@@ -74,19 +96,25 @@ function Create() {
             type="checkbox"
             id="Active"
             name="Active"
-            value="Paneer"
             checked={active}
             onChange={() => setActive((state) => !state)}
           />
         </div>
         <Separator height="5px" />
+        {stops.length ? <text>No of Stops added: {stops.length}</text> : null}
         <PlaceHolder>
-          Stops:
+          Lat/Lang:
           <input
-            type="text"
-            value={stops}
-            onChange={(e) => setStops(e.target.value)}
+            type="number"
+            value={lat}
+            onChange={(e) => setLat(e.target.value)}
           />
+          <input
+            type="number"
+            value={lang}
+            onChange={(e) => setLang(e.target.value)}
+          />
+          <Add onClick={() => onAdd()}>add</Add>
           <Example>
             EXAMPLE FORMAT:{" "}
             {`[

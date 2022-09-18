@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import {
   GoogleMap,
@@ -34,7 +34,13 @@ function Map({ routeList, currentRoute }) {
 
   useEffect(() => {
     if (routeList && currentRoute) {
-      setRoute(routeList.filter((item) => item.name === currentRoute)[0].stops);
+      const val = routeList.filter((item) => item.name === currentRoute)[0]
+        .stops;
+      if (typeof val === "string") {
+        setRoute(JSON.parse(val));
+      } else {
+        setRoute(val);
+      }
     }
   }, [currentRoute]);
 

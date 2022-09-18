@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import NavbarComp from "./components/navbar";
 import { localStorageGet, localStorageSet } from "./utils";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { v4 as uuidv4 } from "uuid";
+import Home from "./pages/home";
 
 function App() {
   useEffect(() => {
@@ -35,11 +35,7 @@ function App() {
     }
   }, []);
 
-  return (
-    <div>
-      <NavbarComp />
-    </div>
-  );
+  return <Home />;
 }
 
 export default App;

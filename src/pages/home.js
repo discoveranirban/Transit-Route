@@ -72,15 +72,19 @@ const customStyles = {
   },
 };
 
-function Home() {
+function Home({ initData }) {
   const [routeList, setRouteList] = useState(null);
   const [currentRoute, setCurrentRoute] = useState(null);
   const [modalIsOpen, setIsOpen] = useState(false);
   //   const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
-    setRouteList(localStorageGet());
-  }, []);
+    if (localStorageGet()) {
+      setRouteList(localStorageGet());
+    } else {
+      setRouteList([initData]);
+    }
+  }, [initData]);
 
   useEffect(() => {
     if (routeList && routeList.length) {
